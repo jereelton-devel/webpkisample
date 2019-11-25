@@ -2,11 +2,14 @@
 // LacunaWebPKI: first example
 
 var licenseWebPki = 'ASYAanNmaWRkbGUubmV0LHdlYnBraS5sYWN1bmFzb2Z0d2FyZS5jb20AAAABClKvO1J22vAD+YmfANiKQLbcLE1lNraPKCel6tRM+ZxR+h6M/crtJYRRVGGz7hrdbM0Y0mfTu15RMYGqQMi1QNZS6GrT4vNzIayv552Fl0EFWQA7jWlctUwfYoHRHVEnCNx9YGXDiA9+yDoGlVwgTR7fjzNeS3Fen1MVIyKBF464gN0JvdiCRJMI47JGVDkPmKjcrYIvJs6y5Lg25RW4ZnBKVruS+HR2s3k8ZrV4y4RCQE4UYMKbukF9vsF+JqAEifRlPq2xLcrNdxBveVDSXS/LRHAcrZrMM+Iw4A79jl0ngWPcy+CwinAhT+3dxVo5ZWMRQFpmTkylEMDvTjV9wQ==';
-
-var pki = new LacunaWebPKI(licenseWebPki);
+var certificates  = null;
+var pki           = new LacunaWebPKI(licenseWebPki);
+var loop          = 0;
 
 function start() {
+
     log('Initializing component ...');
+
     pki.init(onWebPkiReady);
     $.blockUI({
         css: {
@@ -24,38 +27,59 @@ function onWebPkiReady () {
     log('Component ready.');
     
     pki.listCertificates().success(function (certs) {
-        
         log('Listing certificates ...');
-
         var select = $('#certificateSelect');
+        certificates = certs;
         $.each(certs, function() {
             
-            if(new Date() > this.validityEnd) {
-                this.validityEnd = this.validityEnd.toLocaleDateString() + ' [EXPIRADO]';
-            } else {
-                this.validityEnd = this.validityEnd.toLocaleDateString();
-            }
+            composetext = this.subjectName + ' (emitido por ' + this.issuerName + ') em ' + this.validityEnd.toLocaleDateString();
+            if(new Date() > this.validityEnd)
+                composetext = "[EXPIRADO] " + composetext;
 
             select.append(
                 $('<option />')
                 .val(this.thumbprint)
-                .text(this.subjectName + '(emitido por ' + this.issuerName + ') em ' + this.validityEnd)
+                .text(composetext)
             );
         });
-        
         log(certs.length + ' certificates found.');
-
         $.unblockUI();
+
+        //if(loop < 4) { start(); loop += 1; } else { loop = 0; }
 
     });
 }
 
-function readCert() {
+function getSelectedCert() {
     var selectedCertThumb = $('#certificateSelect').val();
-    log('Reading certificate: ' + selectedCertThumb);
-    pki.readCertificate(selectedCertThumb).success(function (certEncoding) {
-        log('Result: ' + certEncoding);
-    });
+    for (var i = 0; i < certificates.length; i++) {
+        var cert = certificates[i];
+        if (cert.thumbprint == selectedCertThumb) {
+            return cert;
+        }
+    }
+    return null;
+}
+
+function validityEndCert() {
+    var selectedCert = getSelectedCert();
+    if(new Date() > selectedCert.validityEnd) {
+        alert("Este certificado expirou em " + selectedCert.validityEnd.toLocaleDateString() + " !");
+        return false;
+    }
+    return true;
+}
+
+function readCert() {
+    if(validityEndCert()) {
+        if(confirm("Deseja mesmo ler este certificado: " + getSelectedCert().subjectName + " ?" )) {
+            var selectedCertThumb = $('#certificateSelect').val();
+            log('Reading certificate: ' + selectedCertThumb);
+            pki.readCertificate(selectedCertThumb).success(function (certEncoding) {
+                log('Result: ' + certEncoding);
+            });
+        }
+    }
 }
 
 function signData() {
@@ -95,4 +119,3 @@ $(function() {
     $('#signHashButton').click(signHash);
     start();
 });
-
