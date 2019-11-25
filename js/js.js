@@ -10,7 +10,13 @@ function start() {
 
     log('Initializing component ...');
 
-    pki.init(onWebPkiReady);
+    pki.init({
+        ready: onWebPkiReady,
+        defaultFail: onWebPkiFail,
+        notInstalled: onWebPkiNotInstalled,
+        angularScope: $scope
+        //brand: appBrand
+    });
     $.blockUI({
         css: {
             backgroundColor: '#FFFFFF', 
@@ -20,6 +26,21 @@ function start() {
         },
         message: '<h1>Aguarde...</h1>'
     });
+}
+
+function appBrand() {
+
+    window.location.href = "index.php";
+}
+
+function onWebPkiNotInstalled (status, message) {
+    alert(message + '\n\nVocê será redirecionado para a página de instalação.');
+    pki.redirectToInstallPage();
+}
+
+function onWebPkiFail(ex) {
+    alert(ex.userMessage + ' (' + ex.code + ')');
+    log('Web PKI error originated at ' + ex.origin + ': (' + ex.code + ') ' + ex.error);
 }
 
 function onWebPkiReady () {
@@ -91,6 +112,8 @@ function signData() {
         digestAlgorithm: 'SHA-256'
     }).success(function (signature) {
         log('Result: ' + signature);
+    }).fail(function(ex) {
+        alert('Houve um erro ao tentar assinar o documento: ' + ex.userMessage);
     });
 }
 
@@ -119,3 +142,10 @@ $(function() {
     $('#signHashButton').click(signHash);
     start();
 });
+
+angular.module("meuModulo",[])
+.controller("indexController", function($scope){
+    $scope.name    = "Sistema Lacuna + AngularJS";
+    $scope.content = "Pequeno Modulo criado com AngularJS para exemplificar o funcionamento.";
+});
+
