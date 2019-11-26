@@ -27,10 +27,10 @@
 	
 	curl_setopt($init, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($init, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($init, CURLOPT_URL, $url);
 	
 	//Carregamento de client-libs js web pki
 	$getlibs = "getlibs=lacuna";
-	curl_setopt($init, CURLOPT_URL, $url);
 	curl_setopt($init, CURLOPT_POSTFIELDS, $getlibs);
 
 	//Libs Pki
@@ -39,7 +39,6 @@
 
 	//Processo de assinatura
 	$sendsignature = "sendsignature=signlacuna";
-	curl_setopt($init, CURLOPT_URL, $url);
 	curl_setopt($init, CURLOPT_POSTFIELDS, $sendsignature);
 
 	//Assinatura Digital
