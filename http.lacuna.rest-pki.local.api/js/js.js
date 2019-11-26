@@ -1,3 +1,4 @@
+
 // ------------------------------------------------------------------------------------------
 // LacunaWebPKI: first example
 
@@ -14,7 +15,7 @@ function start() {
         ready: onWebPkiReady,
         defaultFail: onWebPkiFail,
         notInstalled: onWebPkiNotInstalled,
-        angularScope: $scope
+        //angularScope: $scope
         //brand: appBrand
     });
     $.blockUI({
@@ -143,8 +144,8 @@ $(function() {
     start();
 });
 
-angular.module("meuModulo",[])
-.controller("indexController", function($scope){
+angular.module("appWebPkiAngular_Module",[])
+.controller("appWePkiAngular_Controller", function($scope){
     $scope.name    = "Sistema Lacuna + AngularJS";
     $scope.content = "Pequeno Modulo criado com AngularJS para exemplificar o funcionamento.";
 });
