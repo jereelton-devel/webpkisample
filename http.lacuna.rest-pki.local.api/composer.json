@@ -1,0 +1,17 @@
+{
+    "name": "jereelton/webpkisample",
+    "authors": [
+        {
+            "name": "Jereelton Teixeira",
+            "email": "developerj@gmail.com.br"
+        }
+    ],
+    "require": {
+    	"slim/slim":"2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jerry\\": "vendor\\jerry\\src"
+        }
+    }
+}

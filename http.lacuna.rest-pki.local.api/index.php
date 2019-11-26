@@ -1,40 +1,32 @@
 <?php
 
-if(isset($_POST['getlibs']) && $_POST['getlibs'] == 'lacuna') {
+require_once("vendor/autoload.php");
 
-	Api::getWebPkiLibsJS();
+use \Slim\Slim;
+use \Jerry\Api;
 
-} elseif(isset($_POST['sendsignature']) && $_POST['sendsignature'] == 'signlacuna') {
+$app = new Slim();
 
-	Api::sendSignatureRequest();
+$app->get('/', function(){
 
-} else {
 
-	echo "Erro ao tentar carregar as libs do Web Pki !";
 
-}
+	if(isset($_GET['getlibs']) && $_GET['getlibs'] == 'lacuna') {
 
-class Api
-{
+		Api::getWebPkiLibsJS();
 
-	public static function getWebPkiLibsJS()
-	{
-		echo '
-		<script src="http://lacuna.rest-pki.local/api/js/jquery-1.11.3.js"></script>
-		<script src="http://lacuna.rest-pki.local/api/js/jquery.blockUI.js"></script>
-		<script src="http://lacuna.rest-pki.local/api/js/angular.min.js"></script>
-		<script src="http://lacuna.rest-pki.local/api/js/bootstrap.js"></script>
-		<script src="http://lacuna.rest-pki.local/api/js/lacuna-web-pki-2.14.0.min.js"></script>
-		<script src="http://lacuna.rest-pki.local/api/js/js.js"></script>
-		';
+	} elseif(isset($_GET['sendsignature']) && $_GET['sendsignature'] == 'signlacuna') {
+
+		Api::sendSignatureRequest();
+
+	} else {
+
+		echo "Erro ao tentar carregar as libs do Web Pki !";
+
 	}
 
-	public static function sendSignatureRequest()
-	{
-		echo "Processo de assinatura ativado";
-	}
+});
 
-}
-
+$app->run();
 
 ?>

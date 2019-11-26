@@ -22,28 +22,28 @@
 
 <?php
 	
-	$url  = "http://lacuna.rest-pki.local/api/";
+	$url  = "http://lacuna.rest-pki.local/api/?getlibs=lacuna";
 	$init = curl_init($url);
 	
 	curl_setopt($init, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($init, CURLOPT_SSL_VERIFYPEER, 0);
+	//curl_setopt($init, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($init, CURLOPT_URL, $url);
 	
 	//Carregamento de client-libs js web pki
 	$getlibs = "getlibs=lacuna";
-	curl_setopt($init, CURLOPT_POSTFIELDS, $getlibs);
+	//curl_setopt($init, CURLOPT_POSTFIELDS, $getlibs);
 
 	//Libs Pki
 	$getlibs_response = curl_exec($init);
 	echo $getlibs_response;
 
 	//Processo de assinatura
-	$sendsignature = "sendsignature=signlacuna";
-	curl_setopt($init, CURLOPT_POSTFIELDS, $sendsignature);
+	//$sendsignature = "sendsignature=signlacuna";
+	//curl_setopt($init, CURLOPT_POSTFIELDS, $sendsignature);
 
 	//Assinatura Digital
-	$sendsignature_response = curl_exec($init);
-	echo $sendsignature_response;
+	//$sendsignature_response = curl_exec($init);
+	//echo $sendsignature_response;
 
 	curl_close($init);
 
