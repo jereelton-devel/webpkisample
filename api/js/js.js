@@ -2,12 +2,12 @@
 // ------------------------------------------------------------------------------------------
 // LacunaWebPKI: first example
 
-var licenseWebPki = 'ASYAanNmaWRkbGUubmV0LHdlYnBraS5sYWN1bmFzb2Z0d2FyZS5jb20AAAABClKvO1J22vAD+YmfANiKQLbcLE1lNraPKCel6tRM+ZxR+h6M/crtJYRRVGGz7hrdbM0Y0mfTu15RMYGqQMi1QNZS6GrT4vNzIayv552Fl0EFWQA7jWlctUwfYoHRHVEnCNx9YGXDiA9+yDoGlVwgTR7fjzNeS3Fen1MVIyKBF464gN0JvdiCRJMI47JGVDkPmKjcrYIvJs6y5Lg25RW4ZnBKVruS+HR2s3k8ZrV4y4RCQE4UYMKbukF9vsF+JqAEifRlPq2xLcrNdxBveVDSXS/LRHAcrZrMM+Iw4A79jl0ngWPcy+CwinAhT+3dxVo5ZWMRQFpmTkylEMDvTjV9wQ==';
-var certificates  = null;
-var pki           = new LacunaWebPKI(licenseWebPki);
-var loop          = 0;
+//var licenseWebPki = 'ASYAanNmaWRkbGUubmV0LHdlYnBraS5sYWN1bmFzb2Z0d2FyZS5jb20AAAABClKvO1J22vAD+YmfANiKQLbcLE1lNraPKCel6tRM+ZxR+h6M/crtJYRRVGGz7hrdbM0Y0mfTu15RMYGqQMi1QNZS6GrT4vNzIayv552Fl0EFWQA7jWlctUwfYoHRHVEnCNx9YGXDiA9+yDoGlVwgTR7fjzNeS3Fen1MVIyKBF464gN0JvdiCRJMI47JGVDkPmKjcrYIvJs6y5Lg25RW4ZnBKVruS+HR2s3k8ZrV4y4RCQE4UYMKbukF9vsF+JqAEifRlPq2xLcrNdxBveVDSXS/LRHAcrZrMM+Iw4A79jl0ngWPcy+CwinAhT+3dxVo5ZWMRQFpmTkylEMDvTjV9wQ==';
+//var certificates  = null;
+//var pki           = new LacunaWebPKI(licenseWebPki);
+//var loop          = 0;
 
-function start() {
+/*function start() {
 
     log('Initializing component ...');
 
@@ -27,7 +27,7 @@ function start() {
         },
         message: '<h1>Aguarde...</h1>'
     });
-}
+}*/
 
 function appBrand() {
 
@@ -92,7 +92,7 @@ function validityEndCert() {
     return true;
 }
 
-function readCert() {
+/*function readCert() {
     if(validityEndCert()) {
         if(confirm("Deseja mesmo ler este certificado: " + getSelectedCert().subjectName + " ?" )) {
             var selectedCertThumb = $('#certificateSelect').val();
@@ -102,7 +102,7 @@ function readCert() {
             });
         }
     }
-}
+}*/
 
 function signData() {
     var selectedCertThumb = $('#certificateSelect').val();
@@ -137,7 +137,7 @@ function log(message) {
     }    
 }
 
-$(function() {
+/*$(function() {
     $('#readCertButton').click(readCert);
     $('#signDataButton').click(signData);
     $('#signHashButton').click(signHash);
@@ -150,3 +150,4 @@ angular.module("appWebPkiAngular_Module",[])
     $scope.content = "Pequeno Modulo criado com AngularJS para exemplificar o funcionamento.";
 });
 
+*/

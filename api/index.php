@@ -9,15 +9,15 @@ $app = new Slim();
 
 $app->get('/', function(){
 
-
-
 	if(isset($_GET['getlibs']) && $_GET['getlibs'] == 'lacuna') {
 
-		Api::getWebPkiLibsJS();
+		$libs = Api::getWebPkiLibsJS();
+		echo $libs;
 
 	} elseif(isset($_GET['sendsignature']) && $_GET['sendsignature'] == 'signlacuna') {
 
-		Api::sendSignatureRequest();
+		$sign = Api::sendSignatureRequest();
+		echo $sign;
 
 	} else {
 

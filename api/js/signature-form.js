@@ -1,3 +1,4 @@
+
 // -----------------------------------------------------------------------------------------------------
 // This file contains logic for calling the Web PKI component. It is only an example, feel free to alter
 // it to meet your application's needs.
@@ -26,7 +27,7 @@ var signatureForm = (function() {
         args.refreshButton.click(refresh);
 
         // Block the UI while we get things ready.
-        $.blockUI();
+        blockUI();
 
         // Call the init() method on the LacunaWebPKI object, passing a callback for when the component
         // is ready to be used and another to be called when an error occurs on any of the subsequent
@@ -45,7 +46,8 @@ var signatureForm = (function() {
     // -------------------------------------------------------------------------------------------------
     function refresh() {
         // Block the UI while we load the certificates.
-        $.blockUI();
+
+        blockUI();
         // Invoke the loading of the certificates.
         loadCertificates();
     }
@@ -67,7 +69,7 @@ var signatureForm = (function() {
             selectOptionFormatter: function (cert) {
                 var s = cert.subjectName + ' (issued by ' + cert.issuerName + ')';
                 if (new Date() > cert.validityEnd) {
-                    s = '[EXPIRED] ' + s;
+                    s = '[EXPIRADO] ' + s;
                 }
                 return s;
             }
@@ -86,7 +88,7 @@ var signatureForm = (function() {
     function sign() {
 
         // Block the UI while we perform the signature.
-        $.blockUI();
+        blockUI();
 
         // Get the thumbprint of the selected certificate.
         var selectedCertThumbprint = selectElement.val();
@@ -115,6 +117,63 @@ var signatureForm = (function() {
         // Show the message to the user. You might want to substitute the alert below with a more
         // user-friendly UI component to show the error.
         alert(message);
+    }
+
+    function readCert() {
+        if(validityEndCert()) {
+            if(confirm("Deseja mesmo ler este certificado: " + getSelectedCert().subjectName + " ?" )) {
+                var selectedCertThumb = $('#certificateSelect').val();
+                log('Reading certificate: ' + selectedCertThumb);
+                pki.readCertificate(selectedCertThumb).success(function (certEncoding) {
+                    log('Result: ' + certEncoding);
+                });
+            }
+        }
+    }
+
+    function signData() {
+        var selectedCertThumb = $('#certificateSelect').val();
+        log('Signing data with certificate: ' + selectedCertThumb);
+        pki.signData({
+            thumbprint: selectedCertThumb,
+            data: 'SGVsbG8sIFdvcmxkIQ==', // ASCII encoding of the string "Hello, World!", encoded in Base64
+            digestAlgorithm: 'SHA-256'
+        }).success(function (signature) {
+            log('Result: ' + signature);
+        }).fail(function(ex) {
+            alert('Houve um erro ao tentar assinar o documento: ' + ex.userMessage);
+        });
+    }
+
+    function signHash() {
+        var selectedCertThumb = $('#certificateSelect').val();
+        log('Signing hash with certificate: ' + selectedCertThumb);
+        pki.signHash({
+            thumbprint: selectedCertThumb,
+            hash: '3/1gIbsr1bCvZ2KQgJ7DpTGR3YHH9wpLKGiKNiGCmG8=', // Base64 encoding of the SHA-256 digest of the ASCII encoding of the string "Hello, World!"
+            digestAlgorithm: 'SHA-256'
+        }).success(function (signature) {
+            log('Result: ' + signature);
+        });
+    }
+
+    function log(message) {
+        $('#logPanel').append('<p>' + message + '</p>');
+        if (window.console) {
+            window.console.log(message);
+        }    
+    }
+
+    function blockUI() {
+        $.blockUI({
+            css: {
+                backgroundColor: '#FFFFFF', 
+                color: '#00B088',
+                padding: '40px',
+                borderRadius: '10px',
+            },
+            message: '<h1>Aguarde...</h1>'
+        });
     }
 
     return {
